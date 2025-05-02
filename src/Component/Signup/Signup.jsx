@@ -51,6 +51,7 @@ const formValidations = {
        icon  : "" ,
        message : "" ,
   })
+  const [loginBtn ,setLoginBtn]                = useState(false)
   
  
 // http Request 
@@ -62,7 +63,8 @@ const [httpResponse , httpError , httpLoader] = useHttp(request)
  useEffect(()=>{
   if(request){
          if(httpResponse){ 
-            
+            setLoginBtn(true)
+            console.log(httpResponse)
          return setSweetAlert(
             {
               state : true ,
@@ -74,12 +76,14 @@ const [httpResponse , httpError , httpLoader] = useHttp(request)
 
          }
          else if(httpError){
+          setLoginBtn(false)
+          let errorName = httpError.data.message  ;
           return   setSweetAlert(
                                 {
                                   state : true ,
-                                  title : "SignUp failed " ,
+                                  title :  `${errorName}`,
                                   icon  : "error" ,
-                                  message : "SignUp failed try Again" ,
+                                  message : "SignUp failed " ,
                             }
           )
          }
@@ -311,8 +315,9 @@ const register =(e)=>{
    if(isValid){
 
     return (  setRequest({
-         method : "get" , 
-         url    :  'https://jsonplaceholder.typicode.com/posts' 
+         method : "post" , 
+         url    :  'http://localhost:3030/signup'  ,
+         data :  input
          }) 
 
         )
@@ -333,14 +338,9 @@ const register =(e)=>{
                   <>
                   <Button color="error" 
                   sx={{mr : 3}} 
-                  onClick={()=>setSweetAlert({
-                    state : false ,
-                    title : "" ,
-                    icon  : "" ,
-                    message : "" ,
-                  })}
+                  onClick={()=>setSweetAlert({state : false })}
                   >Cancel</Button>
-                  <Button variant="contained" color="info" sx={{color: "white"}}>Login</Button>
+                 { loginBtn ?  <Button variant="contained" color="info" sx={{color: "white"}}>Login</Button> : null}
                   </>
                 }
                 >

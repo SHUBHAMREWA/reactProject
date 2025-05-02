@@ -15,7 +15,7 @@ export const useHttp  = (request) =>{
             setHttpResponse(response.data)
         })
         .catch(error =>{
-             setHttpError(error)
+             setHttpError(error.response)
         })
     }
 
