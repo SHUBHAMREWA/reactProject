@@ -1,0 +1,87 @@
+[
+  {
+    "category": "DASHBOARD",
+    "menus": [
+      {
+        "label": "Modern",
+        "icon": "airplay",
+        "link": "modern"
+      },
+      {
+        "label": "Analytics",
+        "icon": "analytics",
+        "link": "analytics"
+      },
+      {
+        "label": "Inventory",
+        "icon": "inventory",
+        "link": "inventory"
+      }
+    ]
+  },
+
+  {
+    "category": "APPS",
+    "menus": [
+      {
+        "label": "Customer",
+        "icon": "group",
+        "isDropdown": true,
+        "dropdownMenu": [
+          {
+            "label": "list",
+            "icon": "list",
+            "link": "customer-list"
+          },
+          {
+            "label": "add New",
+            "icon": "add",
+            "link": "customer-add"
+          },
+          {
+            "label": "Edit",
+            "icon": "edit",
+            "link": "customer-edit"
+          }
+        ]
+      },
+
+      {
+        "label": "Calender",
+        "icon": "schedule",
+        "link": "calender"
+      },
+      {
+        "label": "Index",
+        "icon": "inbox",
+        "link": "inbox"
+      },
+      {
+        "label": "chat",
+        "icon": "chat_bubble_outlined",
+        "link": "chat"
+      },
+      {
+        "label": "mail",
+        "icon": "mail",
+        "link": "notifications"
+      }
+    ]
+  },
+
+  {
+    "category": "AUTHENTICATIONS",
+    "menus": [
+      {
+        "label": "Reset Password",
+        "icon": "password",
+        "link": "reset-password"
+      },
+      {
+        "label": "logout",
+        "icon": "logout",
+        "link": "logout"
+      }
+    ]
+  }
+]
