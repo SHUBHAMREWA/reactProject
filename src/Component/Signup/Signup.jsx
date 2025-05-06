@@ -9,10 +9,19 @@ import { Button , Grid, Typography  , stack ,
 import { useState , useEffect } from "react";
 import{ useHttp  }from "../../Hooks/useHttp";
 import SweetAlert from 'react-bootstrap-sweetalert';
- 
+import Cookies from "universal-cookie";
+import { useSelector , useDispatch } from "react-redux";
+import { signupRequest } from "./signup.action";
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 // SignUp Component
 const Signup =()=>{
+
+   const dispatch  = useDispatch() ;
+   const response  =  useSelector(res=>res) ;
+
+  const cookie  = new Cookies()
 
     const signUpForm = {
           fullname : "shubham kushwaha",
@@ -44,52 +53,43 @@ const formValidations = {
   const [input, setInput]  =  useState(signUpForm)  ;
   const [warnValidation , setWarnValidation]    = useState(formValidations);
   const [check , setCheck]                      = useState(false) ;
-  const [request , setRequest]                  = useState(null)  ;
+  
   const [sweetAlert ,setSweetAlert]             = useState({
        state : false ,
        title : "" ,
        icon  : "" ,
        message : "" ,
   })
-  const [loginBtn ,setLoginBtn]                = useState(false)
+
+
+
+  useEffect(()=>{
+        if(response && response.error){
+            return (
+              setSweetAlert({
+                state : true ,
+                title : "failed" ,
+                icon  : "error" ,
+                message :  response.error ,
+              })
+            )
+        }
+
+        if(response && response.data){
+               return(
+                setSweetAlert({
+                  state : true ,
+                  title : "Signup successful" ,
+                  icon  : "success" ,
+                  message : "Signup successful! You can login now."
+                }
+                )
+               )
+        }
+  }, [response])
   
- 
-// http Request 
+  
 
-const [httpResponse , httpError , httpLoader] = useHttp(request)  
-
- 
-// alert show ussing UseEffect
- useEffect(()=>{
-  if(request){
-         if(httpResponse){ 
-            setLoginBtn(true)
-            console.log(httpResponse)
-         return setSweetAlert(
-            {
-              state : true ,
-              title : "SignUp success" ,
-              icon  : "success" ,
-              message : "Signup success try to Login" ,
-         }
-          )
-
-         }
-         else if(httpError){
-          setLoginBtn(false)
-          let errorName = httpError.data.message  ;
-          return   setSweetAlert(
-                                {
-                                  state : true ,
-                                  title :  `${errorName}`,
-                                  icon  : "error" ,
-                                  message : "SignUp failed " ,
-                            }
-          )
-         }
-  }
-   
- } , [httpResponse , httpError ])
 
 
 //   input field Validation 
@@ -314,12 +314,8 @@ const register =(e)=>{
 
    if(isValid){
 
-    return (  setRequest({
-         method : "post" , 
-         url    :  'http://localhost:3030/signup'  ,
-         data :  input
-         }) 
-
+    return (  
+         dispatch(signupRequest(input))
         )
       
    }
@@ -340,12 +336,15 @@ const register =(e)=>{
                   sx={{mr : 3}} 
                   onClick={()=>setSweetAlert({state : false })}
                   >Cancel</Button>
-                 { loginBtn ?  <Button variant="contained" color="info" sx={{color: "white"}}>Login</Button> : null}
+                  <Button 
+                 LinkComponent={Link} 
+                 to = "/login"
+                 variant="contained" color="info" sx={{color: "white"}}>Login</Button>
                   </>
                 }
                 >
                    {sweetAlert.message}
-              </SweetAlert>
+            </SweetAlert> 
              
         <Grid container>
             {/* left Image */}
@@ -433,8 +432,9 @@ const register =(e)=>{
                                >Already Have an Account</Button>
                            </Stack>
                            </Stack>
-
-                      <Button
+                     
+                        <Button
+                        loading = {response && response.isLoader}
                        type="submit" 
                        disabled = { 
                         warnValidation.fullname.error || warnValidation.email.error  ||
@@ -444,7 +444,7 @@ const register =(e)=>{
                        variant="contained" 
                        sx ={{width : "100%" , color: "white"}}
                         color="info" 
-                        > Register</Button>
+                        > Register</Button>    
                    
                  </form>
              </Grid>
@@ -457,4 +457,4 @@ const register =(e)=>{
     return design ;
 }
 
-export default Signup ;
+export default Signup ;  

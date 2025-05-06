@@ -2,6 +2,8 @@ import axios from "axios"
 import { useState , useEffect } from "react" ;
 
 
+axios.defaults.baseURL  =  "http://localhost:3030"
+
 export const useHttp  = (request) =>{
          
     const [httpResponse ,setHttpResponse]  = useState(null) ;

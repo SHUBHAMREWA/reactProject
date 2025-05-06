@@ -11,7 +11,10 @@ import PageNotFound from "./Component/Page-notfound/Pagenotfound";
 import Dashboard from "./Component/Admin-pannel/Dashboard";
 import 'material-icons/iconfont/material-icons.css';
 import { ThemeProvider ,  createTheme } from "@mui/material";
-import { deepPurple , teal , pink ,deepOrange , lightBlue, cyan , indigo } from "@mui/material/colors";
+import { deepPurple , teal , pink ,deepOrange , lightBlue, cyan , indigo } from "@mui/material/colors"; 
+import AuthGaurd from "./Gaurd/AuthGaurd";
+import storage from "./storage";
+import { Provider } from "react-redux";
 
 const App = ()=>{
   
@@ -31,23 +34,25 @@ const App = ()=>{
 
        const design = (
         <>
-
+    <Provider  store={storage}>
         <ThemeProvider theme={Theme}>
         <Router>
               <Routes>
                      <Route path="/" element={<Signup/>}></Route>
                      <Route path="/signup" element={<Signup/>}></Route>
                      <Route path="/login" element={<Login/>}></Route>
-                     <Route path="/admin-panel" element={<Admin/>}>
-                          <Route path="modern"  element={<Dashboard/>}/>
-                          <Route path="*" element={<PageNotFound/>}></Route>
+                     <Route element={<AuthGaurd/>} >
+                            <Route path="/admin-panel" element={<Admin/>}>
+                                   <Route path="modern"  element={<Dashboard/>}/>
+                                   <Route path="*" element={<PageNotFound/>}></Route>
+                            </Route>
                      </Route>
                      <Route path="/*" element={<PageNotFound/>}></Route>
               </Routes>
            
          </Router>
         </ThemeProvider>
-         
+   </Provider>    
 
         </>
 
