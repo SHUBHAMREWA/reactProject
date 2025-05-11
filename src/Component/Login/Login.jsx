@@ -35,6 +35,7 @@ const Login =()=>{
 
 
     const CheckForLogin =()=>{
+        
           if(loginReducer.isLogged){
                cookie.set("authToken" , loginReducer.data.token , {maxAge : 86400 })
                navigate("/admin-panel")

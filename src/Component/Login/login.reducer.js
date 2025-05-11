@@ -1,7 +1,9 @@
 
 import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
     USER_NOT_FOUND,
-    INCORRECT_PASSWORD  } from "./login.state";
+    INCORRECT_PASSWORD ,
+  LOGOUT_SUCCESS ,
+    LOGOUT_FAILED } from "./login.state";
 
     const model = {
           isLoading : false , 
@@ -9,6 +11,8 @@ import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
           incorrectPassword : false, 
           isLogged : false ,
           data  : null ,
+          logout : false ,
+          logoutfail : false  ,
 
     }
 
@@ -22,14 +26,18 @@ import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
                      isLogged : false ,
                      incorrectPassword : false, 
                      data  : null ,
+                      logout : false ,
+                 logoutfail : false  
                 }
                 case LOGIN_SUCCESS : return { 
                      ...state ,
                      isLoading : false,
                      userNotFound : false  , 
-                      isLogged : false,
-                     incorrectPassword : true, 
+                      isLogged : true,
+                     incorrectPassword : false, 
                      data  :  action.payLoad ,
+                              logout : false ,
+                    logoutfail : false  ,
                 }
                 case USER_NOT_FOUND : return { 
                      ...state ,
@@ -38,6 +46,8 @@ import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
                       isLogged : false,
                      incorrectPassword : false, 
                      data  :  null ,
+                      logout : false ,
+              logoutfail : false  ,
                 }
                 case INCORRECT_PASSWORD : return { 
                      ...state ,
@@ -46,6 +56,28 @@ import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
                       isLogged : false,
                      incorrectPassword : true, 
                      data  :  null ,
+                      logout : false ,
+                   logoutfail : false  ,
+                }
+                case LOGOUT_SUCCESS  : return {
+                    ...state , 
+                      isLoading : false,
+                     userNotFound : false ,
+                      isLogged : false,
+                     incorrectPassword : false, 
+                     data  :  null ,
+                    logout : true ,
+                    logoutfail : false  
+                }
+                case LOGOUT_FAILED : return {
+                     ...state , 
+                        isLoading : false,
+                     userNotFound : false ,
+                      isLogged : false,
+                     incorrectPassword : false, 
+                     data  :  null ,
+                    logout : false ,
+                    logoutfail : true  
                 }
 
                 default : return state ;

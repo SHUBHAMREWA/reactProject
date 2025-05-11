@@ -1,8 +1,12 @@
 import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
     USER_NOT_FOUND,
-    INCORRECT_PASSWORD  } from "./login.state";
+    INCORRECT_PASSWORD ,
+     LOGOUT_SUCCESS,
+    LOGOUT_FAILED } from "./login.state";
 
  import axios from "axios";   
+ import Cookies from "universal-cookie"
+ 
 
  axios.defaults.baseURL = "http://localhost:3030"
 
@@ -52,6 +56,34 @@ const loginRequest = (input) =>{
 
 }
 
+const logOutRequest = ()=>{
+             return async(setDispatch)=>{
+                       try{ 
+                         let user = JSON.parse(sessionStorage.getItem("user")) ;
+                         let id = user.userId  ;
+                         let cookie =  new Cookies()
+
+                         let response = await axios({
+                                        method : "get" ,
+                                        url  : "/logout/"+id
+                                        })
+                        
+                          sessionStorage.removeItem("user")   ; 
+                        //    cookie.remove("authToken")  ;
+                        
+                                setDispatch({
+                                    type : LOGOUT_SUCCESS   
+                                })    
+                       }
+                       catch(error){
+                            setDispatch({
+                                 type : LOGOUT_FAILED
+                            })
+                       }
+             }
+}
+
 export {
-    loginRequest 
+    loginRequest ,
+    logOutRequest
 } ;

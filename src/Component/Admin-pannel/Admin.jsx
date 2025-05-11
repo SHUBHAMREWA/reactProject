@@ -31,32 +31,60 @@ import {
 
 import adminMenu from "../../json-api/admin-menu.json";
 import { Dashboard, Logout, Login, PersonAdd } from "@mui/icons-material";
-import { use, useState } from "react";
+import { use, useState , useEffect } from "react";
 import { deepOrange } from "@mui/material/colors";
 import MediaQuery from "react-responsive";
+import { useSelector , useDispatch } from "react-redux";
+import { logOutRequest } from "../Login/login.action";
 
-const width = 250;
 
+// admin component
 const Admin = () => {
-  let navigate = useNavigate();
+    const   dispatch   =  useDispatch ();
+    let {loginReducer}  =  useSelector(res=>res)  ;
+
+  const navigate = useNavigate();
 
   const [activeOnMobile, setActiveOnMobile] = useState(false);
   const [active, setActive] = useState(true);
   const [width, setWidth] = useState(87);
   const [dropdowns, setDropdown] = useState(false);
   const [menuParent, setMenuParent] = useState(null);
-  const showMenu = Boolean(menuParent);
-  const location = useLocation();
+   const showMenu = Boolean(menuParent);
+  const [user , setUser]       =   useState(null)
+   const location = useLocation();
   const routing = location.pathname.split("/");
 
   const openProfileMenu = (e) => {
     return setMenuParent(e.target);
   };
 
+  
+  const showUserInfo =()=>{
+         if(!user){
+              let userInfo  = JSON.parse(sessionStorage.getItem("user")) ;
+                setUser(userInfo)
+         }
+  }
+
+  const userLogInORnot =()=>{
+           if(loginReducer.logout){
+                 navigate("/login")
+           }
+           else if(loginReducer.logoutfail){
+                 window.confirm("Log Out Fail Try Again")
+           }
+  }
+
+
+  useEffect(()=>{
+     showUserInfo() ;
+      userLogInORnot() ;
+    }, [user , loginReducer])
+
   const Nav = ({ data }) => {
     
     const resolve = useResolvedPath(data.link ? data.link : null);
-    console.log(resolve)
     const activeLink = useMatch({
       path: resolve.pathname,
       end: true,
@@ -229,11 +257,11 @@ const Admin = () => {
   // Admin Design 
   const design = (
     <>
-      <MediaQuery minWidth={1224}>
+      <MediaQuery minWidth={769}>
         <DesktopDrawer />
       </MediaQuery>
 
-      <MediaQuery maxWidth={1223}>
+      <MediaQuery maxWidth={768}>
         <MobileDrawer />
       </MediaQuery>
 
@@ -355,7 +383,7 @@ const Admin = () => {
                       >
                         person
                       </span>
-                      Profile
+                      { user && user.name}
                     </ListItemIcon>
                   </ListItemButton>
                 </MenuItem>
@@ -367,9 +395,22 @@ const Admin = () => {
                         style={{ marginRight: "12px" }}
                         className="material-icons-outlined"
                       >
-                        person_add
+                       phone
                       </span>
-                      Add Another Account
+                      {user && user.mobile}
+                    </ListItemIcon>
+                  </ListItemButton>
+                </MenuItem>
+                <MenuItem sx={{ m: 0, p: 0 }}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <span
+                        style={{ marginRight: "12px" }}
+                        className="material-icons-outlined"
+                      >
+                        email
+                      </span>
+                      {user && user.email}
                     </ListItemIcon>
                   </ListItemButton>
                 </MenuItem>
@@ -389,7 +430,9 @@ const Admin = () => {
                 </MenuItem>
 
                 <MenuItem sx={{ m: 0, p: 0 }}>
-                  <ListItemButton>
+                  <ListItemButton 
+                    onClick={()=>dispatch(logOutRequest())}
+                  >
                     <ListItemIcon>
                       <span
                         style={{ marginRight: "12px" }}
@@ -445,7 +488,7 @@ const Admin = () => {
 
         <Outlet />
 
-        <MediaQuery minWidth={1224}>
+        <MediaQuery minWidth={769}>
           <h1>desktop </h1>
         </MediaQuery>
 

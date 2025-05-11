@@ -14,12 +14,11 @@ import { useSelector , useDispatch } from "react-redux";
 import { signupRequest } from "./signup.action";
 
 
-// SignUp Component
+// SignUp Component 
 const Signup =()=>{
 
    const dispatch  = useDispatch() ;
-   const response = useSelector(res=>res) ;
-   console.log(response)
+   
    const {signupReducer}  =  useSelector(res=>res) ;
 
    console.log(signupReducer)
@@ -79,7 +78,7 @@ const formValidations = {
 
         if(signupReducer && signupReducer.data){
            
-          cookie.set("authToken" , signupReducer.data.token , {path : "/" ,  maxAge : 86400})
+          cookie.set("authToken" , signupReducer.data.token , { maxAge : 86400})
 
                return(
                 setSweetAlert({
@@ -431,7 +430,7 @@ const register =(e)=>{
                                </FormGroup>
                                <Button 
                                LinkComponent={  Link } 
-                               to = "login"
+                               to = "/login"
                                >Already Have an Account</Button>
                            </Stack>
                            </Stack>
