@@ -56,10 +56,12 @@ const Admin = () => {
   const Nav = ({ data }) => {
     
     const resolve = useResolvedPath(data.link ? data.link : null);
+    console.log(resolve)
     const activeLink = useMatch({
       path: resolve.pathname,
       end: true,
     });
+
 
     const navDesign = (
       <>
@@ -223,6 +225,8 @@ const Admin = () => {
     );
   };
 
+
+  // Admin Design 
   const design = (
     <>
       <MediaQuery minWidth={1224}>
@@ -398,6 +402,7 @@ const Admin = () => {
                   </ListItemButton>
                 </MenuItem>
               </Menu>
+              
             </Stack>
           </Toolbar>
         </Stack>

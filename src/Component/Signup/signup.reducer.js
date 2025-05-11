@@ -30,7 +30,11 @@ const signupReducer =( state = model , action)=>{
               data  : null  ,
               isLoader : false           
           }
-          default : return state
+          default : return {
+            isLoader : false , 
+            error :   null ,
+            data :    null
+        }
     }
            
 }

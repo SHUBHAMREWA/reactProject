@@ -12,16 +12,18 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import Cookies from "universal-cookie";
 import { useSelector , useDispatch } from "react-redux";
 import { signupRequest } from "./signup.action";
-import LoadingButton from '@mui/lab/LoadingButton';
 
 
 // SignUp Component
 const Signup =()=>{
 
    const dispatch  = useDispatch() ;
-   const response  =  useSelector(res=>res) ;
+   const response = useSelector(res=>res) ;
+   console.log(response)
+   const {signupReducer}  =  useSelector(res=>res) ;
 
-  const cookie  = new Cookies()
+   console.log(signupReducer)
+   const cookie  = new Cookies() ;
 
     const signUpForm = {
           fullname : "shubham kushwaha",
@@ -64,18 +66,21 @@ const formValidations = {
 
 
   useEffect(()=>{
-        if(response && response.error){
+        if(signupReducer && signupReducer.error){
             return (
               setSweetAlert({
                 state : true ,
                 title : "failed" ,
                 icon  : "error" ,
-                message :  response.error ,
+                message :  signupReducer.error ,
               })
             )
         }
 
-        if(response && response.data){
+        if(signupReducer && signupReducer.data){
+           
+          cookie.set("authToken" , signupReducer.data.token , {path : "/" ,  maxAge : 86400})
+
                return(
                 setSweetAlert({
                   state : true ,
@@ -86,7 +91,7 @@ const formValidations = {
                 )
                )
         }
-  }, [response])
+  }, [signupReducer])
   
   
 
@@ -278,9 +283,7 @@ const mobileLength =(input , maxLength)=>{
                    [prop ]: inVal
             }
         })
-
-        )
-         
+        )   
   }
 
 
@@ -338,7 +341,7 @@ const register =(e)=>{
                   >Cancel</Button>
                   <Button 
                  LinkComponent={Link} 
-                 to = "/login"
+                 to = "/admin-panel"
                  variant="contained" color="info" sx={{color: "white"}}>Login</Button>
                   </>
                 }
@@ -434,7 +437,7 @@ const register =(e)=>{
                            </Stack>
                      
                         <Button
-                        loading = {response && response.isLoader}
+                        loading = {signupReducer && signupReducer.isLoader}
                        type="submit" 
                        disabled = { 
                         warnValidation.fullname.error || warnValidation.email.error  ||
