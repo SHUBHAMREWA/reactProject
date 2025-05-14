@@ -284,14 +284,7 @@ const Admin = () => {
                 <IconButton onClick={controlDrawerOnDesktop}>
                   <span className="material-icons-outlined">menu</span>
                 </IconButton>
-              </MediaQuery>
-              <MediaQuery maxWidth={1223}>
-                <IconButton onClick={controlDrawerOnMobile}>
-                  <span className="material-icons-outlined">menu</span>
-                </IconButton>
-              </MediaQuery>
-
-              <IconButton>
+                                <IconButton>
                 <span className="material-icons-outlined">email</span>
               </IconButton>
 
@@ -302,6 +295,14 @@ const Admin = () => {
               <IconButton>
                 <span className="material-icons-outlined">star</span>
               </IconButton>
+              </MediaQuery>
+              <MediaQuery maxWidth={1223}>
+                <IconButton onClick={controlDrawerOnMobile}>
+                  <span className="material-icons-outlined">menu</span>
+                </IconButton>
+  
+              </MediaQuery>
+
             </Stack>
           </Toolbar>
 

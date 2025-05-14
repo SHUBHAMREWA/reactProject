@@ -1,0 +1,13 @@
+
+
+const REVENUE_REQUEST = "REVENUE_REQUEST" ;
+const REVENUE_SUCCESS  = "REVENUE_SUCCESS"   ; 
+
+
+
+
+
+export {
+    REVENUE_REQUEST ,
+    REVENUE_SUCCESS
+}
