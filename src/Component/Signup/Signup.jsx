@@ -3,7 +3,9 @@ import {Link , useNavigate} from "react-router-dom" ;
 import { Button , Grid, Typography  , stack ,
         TextField  , FormControlLabel  , Checkbox , 
         FormGroup,
-        Stack 
+        Stack, 
+        InputAdornment,
+        IconButton
  } from "@mui/material";  
  
 import { useState , useEffect } from "react";
@@ -21,7 +23,7 @@ const Signup =()=>{
    
    const {signupReducer}  =  useSelector(res=>res) ;
 
-   console.log(signupReducer)
+
    const cookie  = new Cookies() ;
 
     const signUpForm = {
@@ -54,7 +56,7 @@ const formValidations = {
   const [input, setInput]  =  useState(signUpForm)  ;
   const [warnValidation , setWarnValidation]    = useState(formValidations);
   const [check , setCheck]                      = useState(false) ;
-  
+ 
   const [sweetAlert ,setSweetAlert]             = useState({
        state : false ,
        title : "" ,
@@ -62,6 +64,7 @@ const formValidations = {
        message : "" ,
   })
 
+  const [changeType , setType]               = useState("password")
 
 
   useEffect(()=>{
@@ -412,14 +415,25 @@ const register =(e)=>{
                         <TextField 
                         label= "Password" 
                         variant="outlined" 
-                        type="password" 
+                        type={changeType} 
                         onChange={updateValue}
                         error= {warnValidation.password.error}
                         helperText = {warnValidation.password.helperText}
                         onInput={passwordValdation}
                         onBlur={passwordValdation}
                         name="password"
-                        value={input.password}/>  
+                        value={input.password}
+                        InputProps={{
+                          endAdornment : (
+                            <InputAdornment position="end">
+                                <IconButton onClick={()=>changeType == "password" ? setType("text") : setType("password")}>
+                                  <span className="material-icons">{changeType == "password" ? "visibility"  : "visibility_off" }</span>
+                                </IconButton>
+                            </InputAdornment>
+                           
+                          )
+                        }}
+                        />  
                            
                            <Stack direction="row" justifyContent="space-between"  alignItems={"center"}>
                                <FormGroup>

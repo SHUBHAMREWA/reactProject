@@ -488,13 +488,6 @@ const Admin = () => {
 
         <Outlet />
 
-        <MediaQuery minWidth={769}>
-          <h1>desktop </h1>
-        </MediaQuery>
-
-        <MediaQuery maxWidth={768}>
-          <h2>Mobile</h2>
-        </MediaQuery>
       </Stack>
     </>
   );

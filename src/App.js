@@ -6,15 +6,17 @@ import { BrowserRouter as Router ,
  import "@fontsource/poppins/500.css"
  import Signup from "./Component/Signup/Signup";
 import Login  from "./Component/Login/Login";
+import Forgot from "./Component/Forgot/Forgot";
 import Admin from "./Component/Admin-pannel/Admin" ; 
 import PageNotFound from "./Component/Page-notfound/Pagenotfound";
-import Dashboard from "./Component/Admin-pannel/Dashboard";
+import Modern from "./Component/Admin-pannel/Modern/Modern";
 import 'material-icons/iconfont/material-icons.css';
 import { ThemeProvider ,  createTheme } from "@mui/material";
 import { deepPurple , teal , pink ,deepOrange , lightBlue, cyan , indigo } from "@mui/material/colors"; 
 import AuthGaurd from "./Gaurd/AuthGaurd";
 import storage from "./storage";
 import { Provider } from "react-redux";
+
 
 const App = ()=>{
   
@@ -38,15 +40,17 @@ const App = ()=>{
         <ThemeProvider theme={Theme}>
         <Router>
               <Routes>
-                     <Route path="/" element={<Signup/>}></Route>
-                     <Route path="/signup" element={<Signup/>}></Route>
-                     <Route path="/login" element={<Login/>}></Route>
+                     <Route path="/" element={<Signup/>}/>
+                     <Route path="/signup" element={<Signup/>}/>
+                     <Route path="/login" element={<Login/>}/>
+                     <Route path="/forgot-password"  element={<Forgot/>}/>
                      <Route element={<AuthGaurd/>} >
                             <Route path="/admin-panel" element={<Admin/>}>
-                                   <Route path="modern"  element={<Dashboard/>}/>
+                                   <Route path="dashboard/modern"  element={<Modern/>}/>
                                    <Route path="*" element={<PageNotFound/>}></Route>
                             </Route>
                      </Route>
+                     
                      <Route path="/*" element={<PageNotFound/>}></Route>
               </Routes>
            

@@ -26,19 +26,20 @@ const Login =()=>{
              }
     })
 
-
     const [input ,setInput]  = useState({
            username :  "" ,
            password : ""
     })
+    const [remember , setRemember]    = useState(false) ;
     const cookie   =  new Cookies()
+ 
 
 
     const CheckForLogin =()=>{
         
           if(loginReducer.isLogged){
                cookie.set("authToken" , loginReducer.data.token , {maxAge : 86400 })
-               navigate("/admin-panel")
+               navigate("/admin-panel/dashboard/modern")
           }
           else if(loginReducer.userNotFound){
                 return  setError((oldData)=>{
@@ -62,10 +63,28 @@ const Login =()=>{
                      }
                   })
           }
+          else if(loginReducer.networkerror){
+                 alert("check you Network wifi and mobile Data")
+          }
          
     }
 
-    useEffect(CheckForLogin , [loginReducer])
+    const rememberForLogin =() =>{
+         let getUserData = localStorage.getItem("loginUserInfo") ;
+         if(getUserData){
+             let getData  = JSON.parse(getUserData) ;
+             return(
+                 setInput(getData) ,
+                 setLoginDisable(false) 
+             )
+
+         }
+    }
+    
+    useEffect(()=>{
+        rememberForLogin() ;
+        CheckForLogin() ;
+    } , [loginReducer])
 
 
     const schema = yup.object().shape({
@@ -128,6 +147,14 @@ const Login =()=>{
 
     const login =(e)=>{
           e.preventDefault()
+          if(remember){
+               const rememberUserData = JSON.stringify(input);
+               localStorage.setItem("loginUserInfo" , rememberUserData)
+          }
+          if(!remember && localStorage.getItem("loginUserInfo")){
+              localStorage.removeItem("loginUserInfo")
+          }
+         
         dispatch(loginRequest(input)) 
     }
 
@@ -190,7 +217,14 @@ const Login =()=>{
                          justifyContent="space-between" 
                          alignItems="center"  
                            >
-                            <FormControlLabel control={<Checkbox size="large"/>} label="Remember Me !"/>
+                            <FormControlLabel
+                             control={
+                             <Checkbox 
+                             onClick={()=> setRemember(!remember)} 
+                             checked={remember}
+                              size="large"
+                              />} 
+                             label="Remember Me !"/>
                            
                              <Button 
                         loading = {loginReducer.isLoading ? true : false}
@@ -207,13 +241,13 @@ const Login =()=>{
                           justifyContent="space-between" 
                           alignItems="center"
                            >
-                                        <Link to="#"
+                                        <Link to="/"
                                         style={{textDecoration : "none"}}
                                         >Create New Account </Link>
 
-                                    <Link to="#"
+                                    <Link to="/forgot-password"
                                         style={{textDecoration : "none"}}
-                                        >Forget Password !</Link>
+                                        >Forgot Password !</Link>
                           </Stack>
                         </Stack>
                       

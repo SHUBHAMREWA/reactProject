@@ -2,7 +2,9 @@ import { LOGIN_REQUEST ,  LOGIN_SUCCESS ,
     USER_NOT_FOUND,
     INCORRECT_PASSWORD ,
      LOGOUT_SUCCESS,
-    LOGOUT_FAILED } from "./login.state";
+    LOGOUT_FAILED ,
+    LOGIN_NETWORK_ERROR
+} from "./login.state";
 
  import axios from "axios";   
  import Cookies from "universal-cookie"
@@ -14,7 +16,6 @@ const loginRequest = (input) =>{
        
     return async(setDispatch)=>{
            try{
-
             setDispatch({
                 type : LOGIN_REQUEST 
             })
@@ -35,7 +36,9 @@ const loginRequest = (input) =>{
                
             }
            catch(error){
-                if(error.response.status === 404){
+
+           
+                if(  error.response && error.response.status === 404){
                     setTimeout(()=>{
                         setDispatch({
                                type : USER_NOT_FOUND
@@ -43,7 +46,7 @@ const loginRequest = (input) =>{
                     } , 500)
                         
                 }
-                else if(error.response.status === 401 ){
+                else if( error.response && error.response.status === 401 ){
                     setTimeout(()=>{
                                setDispatch({
                                type : INCORRECT_PASSWORD
@@ -51,6 +54,12 @@ const loginRequest = (input) =>{
                     } , 500)
                        
                 }
+                else {
+                        setDispatch({
+                              type :     LOGIN_NETWORK_ERROR 
+                        })
+
+                                    }
            }
     }
 
@@ -69,7 +78,7 @@ const logOutRequest = ()=>{
                                         })
                         
                           sessionStorage.removeItem("user")   ; 
-                        //    cookie.remove("authToken")  ;
+                           cookie.remove("authToken")  ;
                         
                                 setDispatch({
                                     type : LOGOUT_SUCCESS   
