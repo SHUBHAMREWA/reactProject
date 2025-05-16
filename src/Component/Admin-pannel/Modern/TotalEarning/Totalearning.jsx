@@ -1,42 +1,83 @@
 
-import {  
-     Grid, Card ,
-      CardMedia  , CardContent ,
-       CardActions , Typography   ,
+import {
+       Grid, Card,
+       CardMedia, CardContent,
+       CardActions, Typography,
        Button
 
-     } from "@mui/material";
+} from "@mui/material";
+
+import Chart from "react-apexcharts";
+import { useState, useEffect } from "react";
+import "../TotalEarning/totalearning.css"
+
+
+const Totalearning = () => {
+
+const options  = {
+       chart : {
+               toolbar : {
+                   show    : false
+               },
+               sparkline : {
+                      enabled :  true
+               }
+       } ,
+
+       theme : {
+               palette : "palette8"
+       },
+       title : {
+            text : "18,000$" ,
+            style : {
+              fontSize: "18px" 
+            }
+       }
+       
+            }
+
+const [series ,setSeries]  = useState([
+       {
+              name : "Earning" ,
+              data  : [2,30,40,57, 63,75,56,37,47,8,78,9,99]
+       }
+        
+])
 
 
 
-const Totalearning =()=>{
+       const design = (
+              <>
+                     <Grid size={{ xs: 12, md: 4 }}>
+                            <Card className="card-box">
+                                   <CardMedia>
+                                          <img src="adanilogo.png" alt="" />
+                                   </CardMedia>
 
-    const design =(
-        <>
-                  <Grid size={{xs :12, md : 3}}>
-                 <Card>
-                        <CardMedia>
-                                <img src="adanilogo.png" alt="" />
-                        </CardMedia>
-                         
-                        <CardContent>
-                                 <Typography> 
-                                    kya ho riya
-                                 </Typography>
-                        </CardContent>
+                                   <CardContent>
+                                          <Typography>
+                                                 Total Earning
+                                          </Typography>
+                                   
+                                   <Chart
+                                    options={options}
+                                    series={series} 
+                                    type = "area" 
+                                    height="160px"
+                                    className = "chart"
+                                    >
 
-                        <CardActions>
-                               <Button>     click here      </Button>
-                               <Button>     click here 2      </Button>
-                        </CardActions>
-                 </Card>
-          </Grid>
+                                   </Chart>
 
-        </>
-    )
+                                   </CardContent>
+                            </Card>
+                     </Grid>
+
+              </>
+       )
 
 
-    return design ;
+       return design;
 }
 
-export default Totalearning ;
+export default Totalearning;

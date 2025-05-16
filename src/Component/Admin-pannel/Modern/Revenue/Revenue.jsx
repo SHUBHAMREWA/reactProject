@@ -1,96 +1,142 @@
 
-import {  
-     Grid, Card ,
-      CardMedia  , CardContent ,
-       CardActions , Typography   ,
-       Button
+import {
+  Grid, Card,
+  CardMedia, CardContent,
+  CardActions, Typography,
+  Button
 
-     } from "@mui/material";
+} from "@mui/material";
 import { Link } from "react-router-dom";
-import Chart from "react-apexcharts" ;
-import { useState ,useEffect } from "react";
+import Chart from "react-apexcharts";
+import { useState, useEffect } from "react";
 import revenueRequest from "./revenue.action";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { render } from "@testing-library/react";
+import { reverseEasing } from "framer-motion";
 
 
-const Revenue =()=>{
+const Revenue = () => {
 
   const dispatch = useDispatch();
-  const response  = useSelector(res=>res) ;
+  const { revenueReducer } = useSelector(res => res);
 
-  const getRevenue =()=>{
-         return dispatch(revenueRequest())
+  console.log(revenueReducer)
+
+  const getRevenue = () => {
+    return dispatch(revenueRequest())
   }
 
 
-  useEffect(()=>{
-         getRevenue()
-  } , [response])
+  const [series, setSeries] = useState([
 
-  const [series ,setSeries]  =  useState([
-    { 
-      name : "Profit" ,
-      data  :[23,23,23,23,23,70,8 ]
-    },
     {
-      name : "Loss" ,
-      data : [1,2,4,5,6,6,66]
+      name: "Earings",
+      data: []
+    },
+
+    {
+      name: "Expenses",
+      data: []
     }
+
+
   ])
-  const [options ,setOptions]  =  useState({
-               xaxis : {
-                    categories : [
-                         "january" ,
-                         "febuary",
-                         "March", 
-                         "April",
-                         "May",
-                         "June" ,
-                         "July"
-                    ]
-               } ,
 
-               theme : {
-                  mode : "light" ,
-                  palette  :"palette7" ,
-                  
-               }
+  const [options, setOptions] = useState({
+    xaxis: {
+      categories:  []
+    },
 
+   chart : { 
+     toolbar : {
+        tools   : {
+             zoom : false ,
+             zoomin : false , 
+             zoomout : false ,
+             pan : false , 
+             reset : false 
+        }
+     }
+   }
+     
 
-              // colors : [ "#438023", "#923444" ]
   })
 
-    const design =(
-        <>
-          <Grid size={{xs :12, md : 6}}>
-                 <Card>
-                        <CardMedia>
-                                <img src="adanilogo.png" alt="" />
-                        </CardMedia>
-                         
-                        <CardContent>
-                                 <Typography> 
-                                    Revenue Updates
-                                 </Typography>
+ const setRevenue = ()=>{
 
-                                 <Chart 
-                                 type="line"
-                                 options={options}
-                                 series={series}
-                                 >
-
-                                 </Chart>
-                        </CardContent>
-                 </Card>
-          </Grid>
-
+        return (
           
-        </>
-    )
+          setSeries([
+                   {
+                         name : "Earnings" ,
+                         data  : revenueReducer.data.earning
+                   },
+                   {
+                         name  : "Expenses"  ,
+                         data : revenueReducer.data.expenses
+                   }
+        ])    ,
 
-    return design
+        setOptions((oldData)=>{
+              return {
+               ...oldData ,
+               xaxis : {
+                  categories : revenueReducer.data.months
+               }
+              }
+        })
       
+    )
+ }
+
+
+  useEffect(() => {
+      if(revenueReducer.loadingRevenue === null){
+            getRevenue()
+      }
+
+      if(revenueReducer.success){
+            setRevenue()
+      }
+     
+  }, [revenueReducer])
+
+
+
+
+  const design = (
+    <>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Card>
+          <CardMedia>
+            <img src="adanilogo.png" alt="" />
+          </CardMedia>
+
+          <CardContent>
+            <Typography>
+              Revenue Updates
+            </Typography>
+
+
+{/* chart */}
+            <Chart
+              type="line"
+              options={options}
+              series={series}
+            >
+
+            </Chart>
+          </CardContent>
+        </Card>
+      </Grid>
+
+
+    </>
+  )
+
+  return design
+
 }
 
 
-export default Revenue  ;
+export default Revenue;

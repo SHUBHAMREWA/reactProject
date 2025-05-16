@@ -8,6 +8,7 @@ import { BrowserRouter as Router ,
 import Login  from "./Component/Login/Login";
 import Forgot from "./Component/Forgot/Forgot";
 import Admin from "./Component/Admin-pannel/Admin" ; 
+import Calender from "./Component/Admin-pannel/Apps/Calender/Calender";
 import PageNotFound from "./Component/Page-notfound/Pagenotfound";
 import Modern from "./Component/Admin-pannel/Modern/Modern";
 import 'material-icons/iconfont/material-icons.css';
@@ -16,8 +17,6 @@ import { deepPurple , teal , pink ,deepOrange , lightBlue, cyan , indigo } from 
 import AuthGaurd from "./Gaurd/AuthGaurd";
 import storage from "./storage";
 import { Provider } from "react-redux";
-
-
 const App = ()=>{
   
         const Theme = createTheme({
@@ -35,7 +34,9 @@ const App = ()=>{
         })
 
        const design = (
+              
         <>
+       
     <Provider  store={storage}>
         <ThemeProvider theme={Theme}>
         <Router>
@@ -47,6 +48,7 @@ const App = ()=>{
                      <Route element={<AuthGaurd/>} >
                             <Route path="/admin-panel" element={<Admin/>}>
                                    <Route path="dashboard/modern"  element={<Modern/>}/>
+                                   <Route path="calender"  element={<Calender/>}/>
                                    <Route path="*" element={<PageNotFound/>}></Route>
                             </Route>
                      </Route>

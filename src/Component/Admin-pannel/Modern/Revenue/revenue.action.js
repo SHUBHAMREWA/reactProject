@@ -1,6 +1,8 @@
 
 import {  REVENUE_REQUEST ,
-    REVENUE_SUCCESS } from "./revenue.state";
+    REVENUE_SUCCESS ,
+REVENUE_FAILED
+ } from "./revenue.state";
 
     import axios from "axios"
 
@@ -8,23 +10,30 @@ import {  REVENUE_REQUEST ,
 
 
 const revenueRequest  = ()=>{
+
+
           return async(setDispatch)=>{
 
-
-            try{
+             try{
+                  
+                setDispatch({
+                     type : REVENUE_REQUEST
+                })
+                
                  const response = await axios({
                      method : "get",
-                     url : "revenue-updates"
+                     url : "revenue-updates" ,
+
                  })
 
-                 console.log(response)
-                //   setDispatch({
-                //     type :  REVENUE_REQUEST
-                //    })
+                  setDispatch({
+                    type :  REVENUE_SUCCESS ,
+                    payLoad : response.data
+                   })
             }
             catch(error){
                 setDispatch({
-                      type :  REVENUE_SUCCESS
+                      type :  REVENUE_FAILED
                 })
             }
 
