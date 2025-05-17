@@ -3,15 +3,17 @@ import { Box, Typography, Button } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 const PageNotFound = () => {
   const navigate = useNavigate();
-
+  
+ const adminReducer = useSelector(res=>res.adminReducer)  ;
   return (
     <Box
       sx={{
         height: '100vh',
-        bgcolor: '#e3f2fd',
+        bgcolor: adminReducer.dark ? "#1d1d1d"  : '#e3f2fd',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -37,12 +39,12 @@ const PageNotFound = () => {
           404 - Not Found
         </Typography>
         <Typography variant="h6" sx={{ mt: 1, mb: 4, color: '#616161' }}>
-          Oops! Page tumhare doston ki tarah gayab ho gaya 😅
+           something went Wrong
         </Typography>
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/admin-panel/dashboard/modern')}
           sx={{
             px: 4,
             py: 1.5,

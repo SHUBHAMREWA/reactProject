@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 const Login =()=>{
 
      const dispatch = useDispatch(); 
-     const {loginReducer} = useSelector(res=>res) 
+     const loginReducer= useSelector(res=>res.loginReducer) 
  
 
     const [loginDisable , setLoginDisable]  =  useState(true) ; 

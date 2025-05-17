@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const Forgot =()=>{
      const  dispatch = useDispatch()
-     const {forgotReducer}= useSelector(res=>res)
+     const forgotReducer= useSelector(res=>res.forgotReducer)
 
      const navigate = useNavigate()
 

@@ -21,7 +21,7 @@ const Signup =()=>{
 
    const dispatch  = useDispatch() ;
    
-   const {signupReducer}  =  useSelector(res=>res) ;
+   const signupReducer  =  useSelector(res=>res.signupReducer) ;
 
 
    const cookie  = new Cookies() ;

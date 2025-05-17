@@ -57,9 +57,9 @@
         "link": "inbox"
       },
       {
-        "label": "chat",
-        "icon": "chat_bubble_outlined",
-        "link": "chat"
+        "label": "Notes",
+        "icon": "note",
+        "link": "notes"
       },
       {
         "label": "mail",

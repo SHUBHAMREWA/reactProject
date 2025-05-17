@@ -10,9 +10,11 @@ import {
 import Chart from "react-apexcharts";
 import { useState, useEffect } from "react";
 import "../TotalEarning/totalearning.css"
-
+import { useSelector } from "react-redux";
 
 const Totalearning = () => {
+
+const adminReducer  = useSelector(res=>res.adminReducer)
 
 const options  = {
        chart : {
@@ -30,7 +32,8 @@ const options  = {
        title : {
             text : "18,000$" ,
             style : {
-              fontSize: "18px" 
+              fontSize: "18px"  , 
+              color :  adminReducer.dark ? "white" : "black"
             }
        }
        

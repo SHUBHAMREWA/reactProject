@@ -18,6 +18,9 @@ import {
   Divider,
   Breadcrumbs,
   Typography,
+  FormGroup,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 
 import {
@@ -28,20 +31,23 @@ import {
   useMatch,
   useLocation,
 } from "react-router-dom";
-
+import Logo from "./adanilogo.png"
 import adminMenu from "../../json-api/admin-menu.json";
 import { Dashboard, Logout, Login, PersonAdd } from "@mui/icons-material";
-import { use, useState , useEffect } from "react";
+import { use, useState, useEffect } from "react";
 import { deepOrange } from "@mui/material/colors";
 import MediaQuery from "react-responsive";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logOutRequest } from "../Login/login.action";
 
 
 // admin component
 const Admin = () => {
-    const   dispatch   =  useDispatch ();
-    let {loginReducer}  =  useSelector(res=>res)  ;
+
+
+  const dispatch = useDispatch();
+  let loginReducer  = useSelector((res) => res.loginReducer);
+ let adminReducer      = useSelector(ress=>ress.adminReducer) 
 
   const navigate = useNavigate();
 
@@ -50,46 +56,42 @@ const Admin = () => {
   const [width, setWidth] = useState(87);
   const [dropdowns, setDropdown] = useState(false);
   const [menuParent, setMenuParent] = useState(null);
-   const showMenu = Boolean(menuParent);
-  const [user , setUser]       =   useState(null)
-   const location = useLocation();
+  const showMenu = Boolean(menuParent);
+  const [user, setUser] = useState(null);
+  const location = useLocation();
   const routing = location.pathname.split("/");
+  const [mode, setMode] = useState("light");
 
   const openProfileMenu = (e) => {
     return setMenuParent(e.target);
   };
 
-  
-  const showUserInfo =()=>{
-         if(!user){
-              let userInfo  = JSON.parse(sessionStorage.getItem("user")) ;
-                setUser(userInfo)
-         }
-  }
+  const showUserInfo = () => {
+    if (!user) {
+      let userInfo = JSON.parse(sessionStorage.getItem("user"));
+      setUser(userInfo);
+    }
+  };
 
-  const userLogInORnot =()=>{
-           if(loginReducer.logout){
-                 navigate("/login")
-           }
-           else if(loginReducer.logoutfail){
-                 window.confirm("Log Out Fail Try Again")
-           }
-  }
+  const userLogInORnot = () => {
+    if (loginReducer.logout) {
+      navigate("/login");
+    } else if (loginReducer.logoutfail) {
+      window.confirm("Log Out Fail Try Again");
+    }
+  };
 
-
-  useEffect(()=>{
-     showUserInfo() ;
-      userLogInORnot() ;
-    }, [user , loginReducer])
+  useEffect(() => {
+    showUserInfo();
+    userLogInORnot();
+  }, [user, loginReducer]);
 
   const Nav = ({ data }) => {
-    
     const resolve = useResolvedPath(data.link ? data.link : null);
     const activeLink = useMatch({
       path: resolve.pathname,
       end: true,
     });
-
 
     const navDesign = (
       <>
@@ -170,7 +172,7 @@ const Admin = () => {
             width: width,
             "& .MuiDrawer-paper": {
               width: width,
-              bgcolor: "#f5f5f5",
+              bgcolor: adminReducer.dark ?  "#0000007b" : "inerit",
               transition: "0.3s",
               overflow: "scroll",
             },
@@ -184,7 +186,7 @@ const Admin = () => {
                   m: 0,
                 }}
               >
-                <img src="images/adanilogo.png" width="90" alt="Brand-logo" />
+                <img src={Logo} width={"90px"} />
               </ListSubheader>
             }
           />
@@ -209,7 +211,7 @@ const Admin = () => {
             width: width,
             "& .MuiDrawer-paper": {
               width: width,
-              bgcolor: "#f5f5f5",
+              bgcolor: adminReducer.dark ? "#0000007b"  : "white" ,
               transition: "0.3s",
               overflow: "scroll",
             },
@@ -223,7 +225,7 @@ const Admin = () => {
                   m: 0,
                 }}
               >
-                <img src="images/adanilogo.png" width="90" alt="Brand-logo" />
+                <img src={Logo} width={"90px"} />
               </ListSubheader>
             }
           />
@@ -253,11 +255,26 @@ const Admin = () => {
     );
   };
 
+  // dark mode
+  const darkmode = (e) => {
+    let check = e.target.checked;
 
-  // Admin Design 
+    if (check) {
+      dispatch({
+        type: "dark",
+      });
+      setMode("dark");
+    } else {
+      dispatch({
+        type: "light",
+      });
+      setMode("light");
+    }
+  };
+
+  // Admin Design
   const design = (
     <>
-
       <MediaQuery minWidth={769}>
         <DesktopDrawer />
       </MediaQuery>
@@ -268,59 +285,58 @@ const Admin = () => {
 
       <AppBar
         position="fixed"
-        elevation={0}
+        elevation={1}
         sx={{
           width: {
             md: `calc(100% - ${width}px)`,
             xs: "100%",
           },
           transition: "0.3s",
-          bgcolor: "white",
+          bgcolor: adminReducer.dark ? "rgb(64, 64, 64)" : "white",
         }}
       >
         <Stack direction={"row"} justifyContent="space-between">
           <Toolbar>
             <Stack direction={"row"} alignItems="center" spacing={"12px"}>
-
-
               <MediaQuery minWidth={1224}>
-
-
                 <IconButton onClick={controlDrawerOnDesktop}>
                   <span className="material-icons-outlined">menu</span>
-               </IconButton>
+                </IconButton>
 
                 <IconButton>
-                <span className="material-icons-outlined">email</span>
-              </IconButton>
+                  <span className="material-icons-outlined">email</span>
+                </IconButton>
 
+                <IconButton>
+                  <span className="material-icons-outlined">web_asset</span>
+                </IconButton>
 
-              <IconButton>
-                <span className="material-icons-outlined">web_asset</span>
-              </IconButton>
-
-
-              <IconButton>
-                <span className="material-icons-outlined">star</span>
-              </IconButton>
-
-
+                <IconButton>
+                  <span className="material-icons-outlined">star</span>
+                </IconButton>
               </MediaQuery>
 
-
               <MediaQuery maxWidth={1223}>
-
                 <IconButton onClick={controlDrawerOnMobile}>
                   <span className="material-icons-outlined">menu</span>
                 </IconButton>
-  
               </MediaQuery>
-
             </Stack>
           </Toolbar>
 
           <Toolbar>
             <Stack alignItems="center" direction="row" spacing={"12px"}>
+              <FormGroup sx={{ color: "black" }}>
+                <FormControlLabel
+                  control={<Switch color="error"
+                    onChange={darkmode} />}
+                  label={mode}
+                  sx={{
+                     color : adminReducer.dark ? "white" : "black"
+                  }}
+                />
+              </FormGroup>
+
               <IconButton>
                 <span className="material-icons-outlined">notifications</span>
               </IconButton>
@@ -397,7 +413,7 @@ const Admin = () => {
                       >
                         person
                       </span>
-                      { user && user.name}
+                      {user && user.name}
                     </ListItemIcon>
                   </ListItemButton>
                 </MenuItem>
@@ -409,7 +425,7 @@ const Admin = () => {
                         style={{ marginRight: "12px" }}
                         className="material-icons-outlined"
                       >
-                       phone
+                        phone
                       </span>
                       {user && user.mobile}
                     </ListItemIcon>
@@ -444,9 +460,7 @@ const Admin = () => {
                 </MenuItem>
 
                 <MenuItem sx={{ m: 0, p: 0 }}>
-                  <ListItemButton 
-                    onClick={()=>dispatch(logOutRequest())}
-                  >
+                  <ListItemButton onClick={() => dispatch(logOutRequest())}>
                     <ListItemIcon>
                       <span
                         style={{ marginRight: "12px" }}
@@ -459,7 +473,6 @@ const Admin = () => {
                   </ListItemButton>
                 </MenuItem>
               </Menu>
-              
             </Stack>
           </Toolbar>
         </Stack>
@@ -474,7 +487,7 @@ const Admin = () => {
           mt: 4,
           p: 3,
           transition: "0.3s",
-          bgcolor: "#f5f5f5",
+          bgcolor: adminReducer.dark ?  "#0000007b" : "white",
           minHeight: "100vh",
         }}
       >
@@ -501,7 +514,6 @@ const Admin = () => {
         </Breadcrumbs>
 
         <Outlet />
-
       </Stack>
     </>
   );

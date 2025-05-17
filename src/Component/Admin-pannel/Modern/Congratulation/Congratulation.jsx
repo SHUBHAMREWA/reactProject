@@ -10,9 +10,12 @@ import {
 import Chart from "react-apexcharts";
 import { useState, useEffect } from "react";
 import "../Congratulation/Congratulation.css"
+import { useSelector } from "react-redux";
 
 
 const Congratulation = () => {
+
+        const adminReducer = useSelector(res=>res.adminReducer)
 
 const options  = {
        chart : {
@@ -25,12 +28,13 @@ const options  = {
        } ,
 
        theme : {
-               palette : "palette2"
+               palette : "palette1"
        },
        title : {
             text : "19,000$" ,
             style : {
-              fontSize: "18px" 
+              fontSize: "18px"  ,
+              color :   adminReducer.dark ? "white" : "black"
             }
        }
        
@@ -49,7 +53,9 @@ const [series ,setSeries]  = useState([
        const design = (
               <>
                      <Grid size={{ xs: 12, md: 5 }}>
-                            <Card className="card-box">
+                            <Card 
+                            sx={{ bgcolor : adminReducer.dark ? "#1e1e1e" : "white"}}
+                             className="card-box">
                                    <CardMedia>
                                           <img src="adanilogo.png" alt="" />
                                    </CardMedia>

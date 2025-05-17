@@ -1,0 +1,12 @@
+
+const NOTE_REQUEST = "NOTE_REQUEST"   ;
+const NOTE_SUCESS  =  "NOTE-SUCESS"    ; 
+const NOTE_FAILED  =  "NOTE_FAILDED"   ; 
+
+
+export {
+NOTE_REQUEST ,
+ NOTE_SUCESS,
+    NOTE_FAILED 
+
+}

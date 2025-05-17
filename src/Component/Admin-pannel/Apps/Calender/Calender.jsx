@@ -72,9 +72,7 @@ const Calender =()=>{
                             {
                                 title : "my badday" ,
                                 date : "2025-05-16" ,
-                                color : "orange" ,
-                             
-                                
+                                color : "orange" ,                                                       
                             }
                            ]}
                            headerToolbar={{

@@ -18,9 +18,9 @@ import { reverseEasing } from "framer-motion";
 const Revenue = () => {
 
   const dispatch = useDispatch();
-  const { revenueReducer } = useSelector(res => res);
+  const  revenueReducer  = useSelector(res => res.revenueReducer);
+  const adminReducer  = useSelector(ress=>ress.adminReducer)
 
-  console.log(revenueReducer)
 
   const getRevenue = () => {
     return dispatch(revenueRequest())
@@ -43,10 +43,29 @@ const Revenue = () => {
   ])
 
   const [options, setOptions] = useState({
+
     xaxis: {
       categories:  []
     },
 
+     xaxis: {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: {
+      style: {
+        colors: Array(12).fill('#fff'), // Sabhi x-axis labels white
+        fontSize: '14px'
+      }
+    } 
+  },
+  yaxis: { 
+    labels: {
+      style: {
+        colors: adminReducer.dark ? ['#fff'] : "",  // Y-axis label bhi white
+        fontSize: '14px'
+      }
+    }
+  },
+    
    chart : { 
      toolbar : {
         tools   : {
@@ -58,7 +77,10 @@ const Revenue = () => {
         }
      }
    }
-     
+     ,tooltip: {
+       
+        theme: adminReducer.dark ? 'dark' : "light",
+      }
 
   })
 
@@ -81,7 +103,14 @@ const Revenue = () => {
               return {
                ...oldData ,
                xaxis : {
-                  categories : revenueReducer.data.months
+                  categories : revenueReducer.data.months ,
+               labels: {
+                style: {
+                  colors: adminReducer.dark ? Array(12).fill('#fff') : "", // Sabhi x-axis labels white
+                  fontSize: '14px'
+                }
+              }
+                  
                }
               }
         })
@@ -108,12 +137,10 @@ const Revenue = () => {
     <>
       <Grid size={{ xs: 12, md: 6 }}>
         <Card>
-          <CardMedia>
-            <img src="adanilogo.png" alt="" />
-          </CardMedia>
+        
 
           <CardContent>
-            <Typography>
+            <Typography variant="h5" component="div">
               Revenue Updates
             </Typography>
 
